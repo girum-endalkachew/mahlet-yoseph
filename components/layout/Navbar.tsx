@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import BrandLogo from "@/components/ui/BrandLogo";
@@ -13,6 +13,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  const isDark = pathname === "/philosophy";
   const { totalItems, openBag } = useCart();
 
   useEffect(() => {
@@ -24,7 +25,7 @@ export default function Navbar() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  const solid = !isHome || scrolled;
+  const solid = (!isHome && !isDark) || scrolled;
   const tone = solid ? "text-[#4A3D37]" : "text-[#E7DED5]";
   const bar = solid
     ? "bg-[#E7DED5]/90 backdrop-blur-xl border-b border-[#8E786F]/15 shadow-sm"
@@ -33,6 +34,7 @@ export default function Navbar() {
   const links = [
     { href: "/pieces", label: "Shop" },
     { href: "/collections", label: "Collections" },
+    { href: "/philosophy", label: "Philosophy" },
     { href: "/our-story", label: "The Story" },
     { href: "/journal", label: "Journal" },
   ];
@@ -40,7 +42,7 @@ export default function Navbar() {
   return (
     <>
       <header className={"fixed top-0 inset-x-0 z-50 transition-all duration-500 " + bar}>
-        <div className="max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-20 flex items-center justify-between">
+        <div className={"max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-20 flex items-center justify-between " + tone}>
           <button
             onClick={() => setOpen(true)}
             className={"lg:hidden p-2 -ml-2 " + tone}
@@ -51,14 +53,14 @@ export default function Navbar() {
 
           <BrandLogo light={!solid} size="md" />
 
-          <nav className="hidden lg:flex items-center gap-10 text-[10px] tracking-[0.28em] uppercase font-sans">
+          <nav className="hidden lg:flex items-center gap-8 text-[10px] tracking-[0.28em] uppercase font-sans">
             {links.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
                 className={
                   "relative py-1 transition-colors hover:text-[#B89DA4] " +
-                  (pathname.startsWith(l.href) ? "text-[#B89DA4]" : tone)
+                  (pathname.startsWith(l.href) ? "text-[#B89DA4]" : "")
                 }
               >
                 {l.label}
@@ -107,6 +109,7 @@ export default function Navbar() {
                 {[
                   { href: "/pieces", label: "SHOP ALL" },
                   { href: "/collections", label: "COLLECTIONS" },
+                  { href: "/philosophy", label: "PHILOSOPHY" },
                   { href: "/archive", label: "THE ARCHIVE" },
                   { href: "/our-story", label: "OUR STORY" },
                   { href: "/journal", label: "JOURNAL" },
@@ -115,7 +118,7 @@ export default function Navbar() {
                     key={l.href}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.06 * i, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ delay: 0.06 * i, duration: 0.5, ease: "easeOut" }}
                   >
                     <Link
                       href={l.href}
@@ -129,7 +132,7 @@ export default function Navbar() {
               </nav>
 
               <div className="border-t border-[#8E786F]/30 pt-6 flex justify-between items-center text-[10px] tracking-[0.25em] text-[#8E786F]">
-                <span>NOT VINTAGE. FORGOTTEN.</span>
+                <span>WEAR YOUR STRENGTH.</span>
                 <span>ADDIS ABABA</span>
               </div>
             </div>
