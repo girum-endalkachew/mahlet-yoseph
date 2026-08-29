@@ -1,4 +1,7 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+const productPageCode = `'use client';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -432,3 +435,7 @@ export default function ProductPage({
     </main>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, "app", "pieces", "[slug]", "page.tsx"), productPageCode, "utf8");
+console.log("✅ Step 3 Complete: Editorial Product Detail Page Deployed!");
