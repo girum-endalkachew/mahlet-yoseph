@@ -42,7 +42,7 @@ export default function Navbar() {
   return (
     <>
       <header className={"fixed top-0 inset-x-0 z-50 transition-all duration-500 " + bar}>
-        <div className={"max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-20 flex items-center justify-between " + tone}>
+        <div className={"max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 h-[4.5rem] sm:h-20 md:h-[5.25rem] flex items-center justify-between " + tone}>
           <button onClick={() => setOpen(true)} className={"lg:hidden p-2 -ml-2 " + tone} aria-label="Open menu">
             <Menu size={20} strokeWidth={1.5} />
           </button>

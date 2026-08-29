@@ -1,4 +1,7 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+const code = `'use client';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -40,3 +43,21 @@ className={"group inline-flex items-center gap-2 sm:gap-3 " + className}
 </Link>
 );
 }
+`;
+
+fs.writeFileSync(
+path.join(__dirname, "components", "ui", "BrandLogo.tsx"),
+code,
+"utf8"
+);
+
+// Slightly taller navbar so bigger logo fits on phone
+const navPath = path.join(__dirname, "components", "layout", "Navbar.tsx");
+let nav = fs.readFileSync(navPath, "utf8");
+nav = nav.replace(
+/h-16 md:h-20/g,
+"h-[4.5rem] sm:h-20 md:h-[5.25rem]"
+);
+fs.writeFileSync(navPath, nav, "utf8");
+
+console.log("✅ Logo bigger on mobile + desktop; navbar height increased slightly");
