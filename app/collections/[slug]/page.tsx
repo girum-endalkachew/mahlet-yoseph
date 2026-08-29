@@ -121,7 +121,6 @@ export default async function CollectionDetailPage({
                   <p className="text-[9px] text-[#8E786F] mt-1 tracking-widest">
                     {p.year}
                   </p>
-                  <p className="text-sm mt-2 text-[#4A3D37]">${p.price}</p>
                 </Link>
               ))}
             </div>

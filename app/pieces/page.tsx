@@ -19,8 +19,7 @@ export default function PiecesPage() {
             THE PIECES.
           </h1>
           <p className="mt-4 text-[#8E786F] font-light max-w-lg">
-            Forgotten silhouettes. Reimagined for movement. Not vintage —
-            remembered differently.
+            Forgotten silhouettes. Reimagined for movement. Not vintage — remembered differently.
           </p>
         </div>
 
@@ -42,7 +41,6 @@ export default function PiecesPage() {
               <p className="text-[9px] text-[#8E786F] tracking-widest mt-1">
                 {p.year}
               </p>
-              <p className="text-sm mt-2">${p.price}</p>
             </Link>
           ))}
         </div>

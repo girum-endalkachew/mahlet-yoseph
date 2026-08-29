@@ -1,18 +1,19 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+const nav = `'use client';
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/context/CartContext";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  const { totalItems, openBag } = useCart();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -39,12 +40,7 @@ export default function Navbar() {
   return (
     <>
       <header className={"fixed top-0 inset-x-0 z-50 transition-all duration-500 " + bar}>
-        <div
-          className={
-            "max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-[4.5rem] flex items-center justify-between " +
-            tone
-          }
-        >
+        <div className={"max-w-[1800px] mx-auto px-5 sm:px-8 md:px-12 h-16 md:h-[4.5rem] flex items-center justify-between " + tone}>
           <button
             onClick={() => setOpen(true)}
             className={"lg:hidden p-2 -ml-2 " + tone}
@@ -61,12 +57,7 @@ export default function Navbar() {
               </span>
               <Sparkles size={10} className="text-[#C8A86A] fill-[#C8A86A] opacity-90" />
             </span>
-            <span
-              className={
-                "text-[8px] tracking-[0.42em] uppercase mt-1 opacity-70 " +
-                (solid ? "text-[#8E786F]" : "text-[#E7DED5]/80")
-              }
-            >
+            <span className={"text-[8px] tracking-[0.42em] uppercase mt-1 opacity-70 " + (solid ? "text-[#8E786F]" : "text-[#E7DED5]/80")}>
               Mahlet Yoseph
             </span>
           </Link>
@@ -93,18 +84,12 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-5 md:gap-7 text-[10px] tracking-[0.28em] uppercase">
-            <Link
-              href="/archive"
-              className={"hidden sm:inline hover:text-[#B89DA4] transition " + tone}
-            >
+            <Link href="/archive" className={"hidden sm:inline hover:text-[#B89DA4] transition " + tone}>
               Archive
             </Link>
-            <button
-              onClick={openBag}
-              className={"inline-flex items-center gap-1.5 hover:text-[#B89DA4] transition " + tone}
-            >
+            <button className={"inline-flex items-center gap-1.5 hover:text-[#B89DA4] transition " + tone}>
               <span>Bag</span>
-              <span className="opacity-80">({totalItems})</span>
+              <span className="opacity-70">(0)</span>
             </button>
           </div>
         </div>
@@ -118,13 +103,12 @@ export default function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] bg-[#362A24] text-[#E7DED5]"
           >
+            <div className="absolute inset-0 grain" />
             <div className="relative h-full flex flex-col p-8 md:p-12">
               <div className="flex justify-between items-center border-b border-[#8E786F]/30 pb-6">
                 <div className="flex items-center gap-2">
                   <Sparkles size={12} className="text-[#C8A86A] fill-[#C8A86A]" />
-                  <span className="font-serif tracking-[0.28em] text-sm">
-                    MAHLET YOSEPH
-                  </span>
+                  <span className="font-serif tracking-[0.28em] text-sm">MAHLET YOSEPH</span>
                 </div>
                 <button onClick={() => setOpen(false)} className="p-2" aria-label="Close">
                   <X size={22} strokeWidth={1.5} />
@@ -143,11 +127,7 @@ export default function Navbar() {
                     key={l.href}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: 0.06 * i,
-                      duration: 0.5,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
+                    transition={{ delay: 0.06 * i, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                   >
                     <Link
                       href={l.href}
@@ -160,17 +140,9 @@ export default function Navbar() {
                 ))}
               </nav>
 
-              <div className="border-t border-[#8E786F]/30 pt-6 flex justify-between items-center text-[10px] tracking-[0.25em] text-[#8E786F]">
+              <div className="border-t border-[#8E786F]/30 pt-6 flex justify-between text-[10px] tracking-[0.25em] text-[#8E786F]">
                 <span>Not vintage. Forgotten.</span>
-                <button
-                  onClick={() => {
-                    setOpen(false);
-                    openBag();
-                  }}
-                  className="text-[#E7DED5] hover:text-[#C8A86A] transition"
-                >
-                  Bag ({totalItems})
-                </button>
+                <span>Addis Ababa</span>
               </div>
             </div>
           </motion.div>
@@ -179,3 +151,7 @@ export default function Navbar() {
     </>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, "components", "layout", "Navbar.tsx"), nav, "utf8");
+console.log("✅ Navbar beauty pass done");

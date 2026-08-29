@@ -1,4 +1,7 @@
-@import "tailwindcss";
+﻿const fs = require("fs");
+const path = require("path");
+
+fs.writeFileSync(path.join(__dirname, "app", "globals.css"), `@import "tailwindcss";
 
 :root {
   --cream: #E7DED5;
@@ -96,3 +99,6 @@ h1, h2, h3, h4, h5, h6 {
   outline: 1px solid var(--gold);
   outline-offset: 3px;
 }
+`, "utf8");
+
+console.log("✅ globals.css beauty tokens applied");

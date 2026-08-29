@@ -5,11 +5,11 @@ import Link from "next/link";
 import { use, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
-  products,
   getProduct,
   getRelatedProducts,
   getCollection,
 } from "@/lib/data";
+import { useCart } from "@/context/CartContext";
 
 const sizes = ["XS", "S", "M", "L", "XL"];
 
@@ -22,12 +22,16 @@ export default function ProductPage({
   const product = getProduct(slug);
   const [size, setSize] = useState("M");
   const [added, setAdded] = useState(false);
+  const { addItem } = useCart();
 
   if (!product) {
     return (
       <main className="min-h-screen bg-[#E7DED5] pt-32 px-6 text-center">
         <h1 className="font-serif text-3xl">Piece not found</h1>
-        <Link href="/pieces" className="mt-6 inline-block text-sm tracking-widest uppercase">
+        <Link
+          href="/pieces"
+          className="mt-6 inline-block text-sm tracking-widest uppercase"
+        >
           ← Back to Pieces
         </Link>
       </main>
@@ -36,6 +40,19 @@ export default function ProductPage({
 
   const collection = getCollection(product.collection);
   const related = getRelatedProducts(product.slug);
+
+  const handleAdd = () => {
+    addItem({
+      id: product.slug,
+      slug: product.slug,
+      name: product.name,
+      image: product.image,
+      size,
+      year: product.year,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1600);
+  };
 
   return (
     <main className="bg-[#E7DED5] text-[#4A3D37] min-h-screen pt-24 pb-20">
@@ -48,7 +65,6 @@ export default function ProductPage({
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
-          {/* Gallery */}
           <div className="relative aspect-[3/4] bg-[#DED5CD] overflow-hidden">
             <Image
               src={product.image}
@@ -63,7 +79,6 @@ export default function ProductPage({
             </div>
           </div>
 
-          {/* Info */}
           <div className="flex flex-col justify-center lg:py-8">
             {collection && (
               <Link
@@ -79,12 +94,10 @@ export default function ProductPage({
             <p className="text-[10px] tracking-widest text-[#8E786F] mt-3">
               {product.year}
             </p>
-            <p className="text-2xl mt-6 font-light">${product.price}</p>
-            <p className="mt-6 text-[#8E786F] font-light leading-relaxed max-w-md">
+            <p className="mt-8 text-[#8E786F] font-light leading-relaxed max-w-md">
               {product.description}
             </p>
 
-            {/* Size */}
             <div className="mt-10">
               <p className="text-[10px] tracking-[0.2em] uppercase mb-3">Size</p>
               <div className="flex flex-wrap gap-2">
@@ -106,18 +119,14 @@ export default function ProductPage({
             </div>
 
             <button
-              onClick={() => {
-                setAdded(true);
-                setTimeout(() => setAdded(false), 2000);
-              }}
+              onClick={handleAdd}
               className="mt-10 w-full sm:w-auto sm:min-w-[280px] bg-[#4A3D37] hover:bg-[#8E786F] text-[#E7DED5] py-4 px-8 text-[11px] tracking-[0.25em] uppercase transition"
             >
-              {added ? "Added to Bag ✓" : "Add to Bag — $" + product.price}
+              {added ? "Added to Bag ✓" : "Add to Bag"}
             </button>
           </div>
         </div>
 
-        {/* Story */}
         <section className="mt-20 md:mt-28 max-w-3xl border-t border-[#8E786F]/20 pt-16">
           <span className="text-[10px] tracking-[0.3em] uppercase text-[#8E786F]">
             The Story Behind The Piece
@@ -127,7 +136,6 @@ export default function ProductPage({
           </p>
         </section>
 
-        {/* Root to form strip */}
         <section className="mt-16 py-12 border-y border-[#8E786F]/20">
           <p className="text-[10px] tracking-[0.3em] uppercase text-[#8E786F] mb-6">
             From Root to Form
@@ -143,7 +151,6 @@ export default function ProductPage({
           </div>
         </section>
 
-        {/* Related */}
         <section className="mt-20">
           <div className="flex justify-between items-end mb-10">
             <h2 className="font-serif text-2xl md:text-3xl">Related Pieces</h2>
@@ -169,7 +176,6 @@ export default function ProductPage({
                 <h3 className="text-[10px] tracking-[0.15em] uppercase font-semibold">
                   {p.name}
                 </h3>
-                <p className="text-sm mt-1">${p.price}</p>
               </Link>
             ))}
           </div>

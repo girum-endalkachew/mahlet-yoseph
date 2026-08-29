@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Montserrat } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
+import BagDrawer from "@/components/layout/BagDrawer";
+import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -17,7 +19,8 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "MAHLET YOSEPH | Fashion House",
-  description: "The Art of Strength. Forgotten silhouettes. Reimagined for movement.",
+  description:
+    "The Art of Strength. Forgotten silhouettes. Reimagined for movement.",
 };
 
 export default function RootLayout({
@@ -35,8 +38,11 @@ export default function RootLayout({
           " font-sans bg-[#E7DED5] text-[#4A3D37] antialiased min-h-screen"
         }
       >
-        <Navbar />
-        {children}
+        <CartProvider>
+          <Navbar />
+          {children}
+          <BagDrawer />
+        </CartProvider>
       </body>
     </html>
   );
