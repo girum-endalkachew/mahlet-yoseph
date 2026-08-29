@@ -1,4 +1,7 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+const pageContent = `'use client';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -370,3 +373,7 @@ export default function HomePage() {
     </main>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, 'app', 'page.tsx'), pageContent, 'utf8');
+console.log('✅ app/page.tsx updated with strict Framer Motion types!');
