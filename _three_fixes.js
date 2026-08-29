@@ -1,4 +1,68 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+function write(filePath, content) {
+  const full = path.join(__dirname, filePath);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, content, "utf8");
+  console.log("✅", filePath);
+}
+
+// Bigger icon (mylogo) + name lockup image (mylogo2)
+write("components/ui/BrandLogo.tsx", `'use client';
+
+import Image from "next/image";
+import Link from "next/link";
+
+interface BrandLogoProps {
+  light?: boolean;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}
+
+export default function BrandLogo({
+  size = "md",
+  className = "",
+}: BrandLogoProps) {
+  const iconBox = {
+    sm: "w-9 h-9",
+    md: "w-12 h-12 md:w-14 md:h-14",
+    lg: "w-16 h-16 md:w-20 md:h-20",
+  }[size];
+
+  const wordBox = {
+    sm: "h-8 w-[130px]",
+    md: "h-10 md:h-12 w-[160px] md:w-[200px]",
+    lg: "h-14 md:h-16 w-[200px] md:w-[260px]",
+  }[size];
+
+  return (
+    <Link href="/" className={"group inline-flex items-center gap-2.5 md:gap-3 " + className}>
+      <div className={"relative shrink-0 " + iconBox}>
+        <Image
+          src="/images/logo/mylogo.jpg"
+          alt=""
+          fill
+          priority
+          className="object-contain"
+        />
+      </div>
+      <div className={"relative shrink-0 " + wordBox}>
+        <Image
+          src="/images/logo/mylogo2.jpg"
+          alt="MAHLET YOSEPH — The Art of Strength"
+          fill
+          priority
+          className="object-contain object-left"
+        />
+      </div>
+    </Link>
+  );
+}
+`);
+
+// Homepage: dark gold STRENGTH, NO duplicate philosophy section
+write("app/page.tsx", `'use client';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -242,3 +306,89 @@ export default function HomePage() {
     </main>
   );
 }
+`);
+
+// Philosophy page STRENGTH also dark gold
+write("app/philosophy/page.tsx", `import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft, Sparkles } from "lucide-react";
+import BrandLogo from "@/components/ui/BrandLogo";
+
+export const metadata = {
+  title: "Philosophy | MAHLET YOSEPH",
+  description: "Wear Your Strength.",
+};
+
+export default function PhilosophyPage() {
+  return (
+    <main className="min-h-screen text-[#E7DED5] relative overflow-hidden">
+      <div className="absolute inset-0 -z-10">
+        <Image src="/images/philosophy/bg.jpg" alt="" fill priority className="object-cover" sizes="100vw" />
+        <div className="absolute inset-0 bg-[#362A24]/75" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#362A24]/40 via-transparent to-[#362A24]/90" />
+        <div className="absolute inset-0 grain" />
+      </div>
+
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-12 pt-28 md:pt-32">
+        <Link href="/" className="inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase text-[#B89DA4] hover:text-[#E7DED5] transition mb-16">
+          <ArrowLeft size={12} /> Home
+        </Link>
+      </div>
+
+      <div className="relative z-10 max-w-[900px] mx-auto px-6 md:px-12 pb-32">
+        <div className="text-center mb-20 space-y-6">
+          <div className="flex items-center justify-center gap-2 text-[#C8A86A]">
+            <Sparkles size={12} className="fill-[#C8A86A]" />
+            <span className="text-[10px] tracking-[0.4em] uppercase font-sans">Our Philosophy</span>
+            <Sparkles size={12} className="fill-[#C8A86A]" />
+          </div>
+          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl leading-[0.9] tracking-tight">
+            WEAR YOUR <br />
+            <span className="italic font-light text-[#A68B4B]">STRENGTH.</span>
+          </h1>
+          <div className="gold-line mx-auto w-24 mt-8" />
+        </div>
+
+        <div className="space-y-16 text-center">
+          <p className="font-serif text-2xl sm:text-3xl md:text-4xl leading-relaxed text-[#E7DED5] italic">
+            We believe strength begins beyond ourselves.
+          </p>
+          <div className="space-y-6 py-8 border-y border-[#E7DED5]/15">
+            {["the courage to begin", "the confidence to keep going", "the beauty of becoming", "the power to rise again"].map((line) => (
+              <p key={line} className="font-serif text-xl sm:text-2xl md:text-3xl text-[#E7DED5]/90 leading-relaxed">{line}</p>
+            ))}
+          </div>
+          <p className="font-serif text-xl sm:text-2xl text-[#B89DA4] italic leading-relaxed max-w-2xl mx-auto">
+            Because strength is more than what the body can do.
+          </p>
+          <div className="space-y-3 py-8">
+            <p className="font-sans text-sm sm:text-base text-[#E7DED5]/85 font-light leading-relaxed max-w-xl mx-auto">We create for those who move with purpose,</p>
+            <p className="font-sans text-sm sm:text-base text-[#E7DED5]/85 font-light leading-relaxed max-w-xl mx-auto">live with confidence,</p>
+            <p className="font-sans text-sm sm:text-base text-[#E7DED5]/85 font-light leading-relaxed max-w-xl mx-auto">and carry strength wherever they go.</p>
+          </div>
+          <div className="space-y-4 py-12 border-y border-[#E7DED5]/15">
+            <p className="font-serif text-2xl sm:text-3xl text-[#E7DED5] leading-relaxed">From strong women.</p>
+            <p className="font-serif text-2xl sm:text-3xl text-[#E7DED5] leading-relaxed">From strong men.</p>
+            <p className="font-serif text-2xl sm:text-3xl text-[#C8A86A] leading-relaxed italic">For a stronger kind of love.</p>
+          </div>
+          <div className="space-y-4 pt-8">
+            <p className="font-sans text-xs sm:text-sm tracking-[0.3em] uppercase text-[#8E786F]">This is more than what you wear.</p>
+            <p className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#E7DED5] leading-tight">
+              This is your <span className="italic text-[#A68B4B]">strength.</span>
+            </p>
+          </div>
+          <div className="pt-16 flex flex-col items-center gap-6">
+            <div className="gold-line w-16" />
+            <BrandLogo light size="md" />
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
+`);
+
+console.log("\\n✅ Done:");
+console.log("  1. STRENGTH. = dark gold #A68B4B");
+console.log("  2. Homepage philosophy section REMOVED (only /philosophy keeps full text)");
+console.log("  3. Bigger logo: mylogo.jpg icon + mylogo2.jpg name lockup");

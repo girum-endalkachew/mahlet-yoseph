@@ -6,57 +6,44 @@ import Link from "next/link";
 interface BrandLogoProps {
   light?: boolean;
   size?: "sm" | "md" | "lg";
-  showTagline?: boolean;
   className?: string;
 }
 
 export default function BrandLogo({
-  light = false,
   size = "md",
-  showTagline = true,
   className = "",
 }: BrandLogoProps) {
-  const logoSizes = {
-    sm: "w-7 h-7",
-    md: "w-10 h-10 md:w-12 md:h-12",
+  const iconBox = {
+    sm: "w-9 h-9",
+    md: "w-12 h-12 md:w-14 md:h-14",
     lg: "w-16 h-16 md:w-20 md:h-20",
-  };
+  }[size];
 
-  const titleSizes = {
-    sm: "text-xs tracking-[0.25em]",
-    md: "text-sm md:text-base tracking-[0.28em]",
-    lg: "text-xl md:text-2xl tracking-[0.32em]",
-  };
-
-  const taglineSizes = {
-    sm: "text-[7px] tracking-[0.35em]",
-    md: "text-[8px] md:text-[9px] tracking-[0.4em]",
-    lg: "text-[10px] md:text-[11px] tracking-[0.45em]",
-  };
-
-  const textColor = light ? "text-[#E7DED5]" : "text-[#4A3D37]";
-  const subtextColor = light ? "text-[#C8A86A]" : "text-[#8E786F]";
+  const wordBox = {
+    sm: "h-8 w-[130px]",
+    md: "h-10 md:h-12 w-[160px] md:w-[200px]",
+    lg: "h-14 md:h-16 w-[200px] md:w-[260px]",
+  }[size];
 
   return (
-    <Link href="/" className={"group inline-flex items-center gap-3 " + className}>
-      <div className={"relative shrink-0 " + logoSizes[size]}>
+    <Link href="/" className={"group inline-flex items-center gap-2.5 md:gap-3 " + className}>
+      <div className={"relative shrink-0 " + iconBox}>
         <Image
           src="/images/logo/mylogo.jpg"
-          alt="MAHLET YOSEPH Logo"
+          alt=""
           fill
           priority
           className="object-contain"
         />
       </div>
-      <div className="flex flex-col">
-        <span className={"font-serif font-medium leading-none uppercase transition-colors group-hover:text-[#B89DA4] " + textColor + " " + titleSizes[size]}>
-          MAHLET YOSEPH
-        </span>
-        {showTagline && (
-          <span className={"font-sans uppercase mt-1 opacity-80 " + subtextColor + " " + taglineSizes[size]}>
-            THE ART OF STRENGTH
-          </span>
-        )}
+      <div className={"relative shrink-0 " + wordBox}>
+        <Image
+          src="/images/logo/mylogo2.jpg"
+          alt="MAHLET YOSEPH — The Art of Strength"
+          fill
+          priority
+          className="object-contain object-left"
+        />
       </div>
     </Link>
   );

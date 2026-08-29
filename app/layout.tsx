@@ -18,15 +18,12 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "MAHLET YOSEPH | Fashion House",
-  description:
-    "The Art of Strength. Forgotten silhouettes. Reimagined for movement.",
+  description: "The Art of Strength. Forgotten silhouettes. Reimagined for movement.",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body
