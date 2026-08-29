@@ -1,64 +1,144 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
+import { journalPosts } from "@/lib/journal";
 
 export const metadata = {
   title: "Journal | MAHLET YOSEPH",
-  description: "Fashion stories, process, and collection notes.",
+  description: "Stories from the archive — process, fashion, philosophy, and collection notes.",
 };
 
-const posts = [
-  {
-    slug: "from-root-to-form",
-    cat: "Process",
-    title: "From Root to Form",
-    excerpt: "How a forgotten silhouette becomes a new piece.",
-  },
-  {
-    slug: "return-of-capri-pants",
-    cat: "Fashion",
-    title: "The Return of Capri Pants",
-    excerpt: "The silhouette everyone forgot — and why it matters again.",
-  },
-  {
-    slug: "sports-club-1998",
-    cat: "Collection",
-    title: "Sports Club, 1998",
-    excerpt: "Why old athletic uniforms still feel modern.",
-  },
-];
-
 export default function JournalPage() {
-  return (
-    <main className="bg-[#E7DED5] text-[#4A3D37] min-h-screen pt-28 pb-20">
-      <div className="max-w-[1000px] mx-auto px-6 md:px-12">
-        <span className="text-[10px] tracking-[0.3em] uppercase text-[#8E786F]">
-          Journal
-        </span>
-        <h1 className="font-serif text-4xl sm:text-6xl mt-4 mb-16">
-          STORIES FROM<br />THE ARCHIVE.
-        </h1>
+  const featured = journalPosts[0];
+  const rest = journalPosts.slice(1);
 
-        <div className="space-y-0">
-          {posts.map((post) => (
-            <article
-              key={post.slug}
-              className="border-t border-[#8E786F]/25 py-10 md:py-14 group"
+  return (
+    <main className="bg-[#E7DED5] text-[#4A3D37] min-h-screen pt-28 pb-24">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-12">
+        {/* Header */}
+        <div className="mb-16 md:mb-20 max-w-3xl">
+          <div className="flex items-center gap-2 text-[#C8A86A] mb-4">
+            <Sparkles size={12} className="fill-[#C8A86A]" />
+            <span className="text-[10px] tracking-[0.35em] uppercase text-[#8E786F]">
+              Journal
+            </span>
+          </div>
+          <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl leading-[0.95]">
+            STORIES FROM<br />
+            <span className="italic text-[#8E786F]">THE ARCHIVE.</span>
+          </h1>
+          <p className="mt-6 text-[#8E786F] font-light text-base md:text-lg max-w-xl leading-relaxed">
+            Process notes, collection worlds, and the philosophy behind every silhouette we bring forward.
+          </p>
+        </div>
+
+        {/* Featured Story */}
+        <Link
+          href={"/journal/" + featured.slug}
+          className="group grid grid-cols-1 lg:grid-cols-2 gap-0 mb-20 border border-[#8E786F]/20 overflow-hidden bg-[#F5EFE6] hover:border-[#8E786F]/40 transition-all"
+        >
+          <div className="relative aspect-[4/3] lg:aspect-auto lg:min-h-[420px] bg-[#5C4D45]">
+            <Image
+              src={featured.cover}
+              alt={featured.title}
+              fill
+              priority
+              sizes="(max-width:1024px) 100vw, 50vw"
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#362A24]/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#362A24]/20" />
+          </div>
+          <div className="p-8 md:p-12 flex flex-col justify-center">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-[#C8A86A]">
+              Featured · {featured.category}
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl mt-3 group-hover:text-[#B89DA4] transition-colors leading-tight">
+              {featured.title}
+            </h2>
+            <p className="mt-4 text-[#8E786F] font-light leading-relaxed max-w-md">
+              {featured.excerpt}
+            </p>
+            <div className="mt-6 flex items-center gap-4 text-[10px] tracking-[0.2em] uppercase text-[#8E786F]">
+              <span>{featured.date}</span>
+              <span className="w-1 h-1 rounded-full bg-[#C8A86A]" />
+              <span>{featured.readTime}</span>
+            </div>
+            <span className="mt-8 inline-flex items-center gap-2 text-[10px] tracking-[0.25em] uppercase font-semibold text-[#4A3D37] group-hover:text-[#B89DA4] transition">
+              Read Story <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+            </span>
+          </div>
+        </Link>
+
+        {/* Category filter labels (visual only) */}
+        <div className="flex flex-wrap gap-2 mb-12 text-[10px] tracking-[0.2em] uppercase">
+          <span className="px-4 py-2 bg-[#4A3D37] text-[#E7DED5]">All</span>
+          {["Process", "Fashion", "Collection", "Philosophy", "Brand"].map((cat) => (
+            <span
+              key={cat}
+              className="px-4 py-2 border border-[#8E786F]/30 text-[#8E786F]"
             >
-              <span className="text-[10px] tracking-[0.25em] uppercase text-[#8E786F]">
-                {post.cat}
-              </span>
-              <h2 className="font-serif text-2xl sm:text-4xl mt-3 group-hover:text-[#B89DA4] transition">
-                {post.title}
-              </h2>
-              <p className="mt-4 text-[#8E786F] font-light max-w-xl">
-                {post.excerpt}
-              </p>
-              <span className="inline-flex items-center gap-2 mt-6 text-[10px] tracking-[0.2em] uppercase">
-                Read Story <ArrowRight size={12} />
-              </span>
-            </article>
+              {cat}
+            </span>
           ))}
         </div>
+
+        {/* Story Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          {rest.map((post) => (
+            <Link
+              key={post.slug}
+              href={"/journal/" + post.slug}
+              className="group block border border-[#8E786F]/15 bg-[#F5EFE6] hover:border-[#8E786F]/40 transition-all overflow-hidden"
+            >
+              <div className="relative aspect-[16/10] bg-[#DED5CD] overflow-hidden">
+                <Image
+                  src={post.cover}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width:768px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="p-6 space-y-3">
+                <div className="flex justify-between items-center text-[9px] tracking-[0.25em] uppercase text-[#8E786F]">
+                  <span className="text-[#C8A86A]">{post.category}</span>
+                  <span>{post.readTime}</span>
+                </div>
+                <h2 className="font-serif text-2xl text-[#4A3D37] group-hover:text-[#B89DA4] transition-colors leading-snug">
+                  {post.title}
+                </h2>
+                <p className="text-sm text-[#8E786F] font-light leading-relaxed line-clamp-3">
+                  {post.excerpt}
+                </p>
+                <div className="pt-3 flex justify-between items-center border-t border-[#8E786F]/15 text-[10px] tracking-[0.2em] uppercase">
+                  <span className="text-[#8E786F]">{post.date}</span>
+                  <span className="inline-flex items-center gap-1.5 font-semibold text-[#4A3D37] group-hover:text-[#B89DA4]">
+                    Read <ArrowRight size={11} />
+                  </span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        {/* Philosophy CTA */}
+        <section className="mt-24 py-16 border-t border-[#8E786F]/20 text-center max-w-2xl mx-auto">
+          <span className="text-[10px] tracking-[0.35em] uppercase text-[#C8A86A]">
+            Our Belief
+          </span>
+          <h2 className="font-serif text-3xl sm:text-4xl mt-4 text-[#4A3D37]">
+            Wear Your Strength.
+          </h2>
+          <p className="mt-4 text-[#8E786F] font-light">
+            Strength begins beyond ourselves.
+          </p>
+          <Link
+            href="/philosophy"
+            className="mt-8 inline-flex items-center gap-2 text-[10px] tracking-[0.28em] uppercase border border-[#4A3D37] px-6 py-3 hover:bg-[#4A3D37] hover:text-[#E7DED5] transition"
+          >
+            Read Philosophy <ArrowRight size={12} />
+          </Link>
+        </section>
       </div>
     </main>
   );
