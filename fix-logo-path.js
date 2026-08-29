@@ -1,4 +1,21 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+// 1. Ensure public/logo folder exists and copy image as fallback safeguard
+const srcPath = path.join(__dirname, "public", "images", "logo", "mylogo.jpg");
+const fallbackDir = path.join(__dirname, "public", "logo");
+const fallbackPath = path.join(fallbackDir, "mylogo.jpg");
+
+if (fs.existsSync(srcPath)) {
+  if (!fs.existsSync(fallbackDir)) {
+    fs.mkdirSync(fallbackDir, { recursive: true });
+  }
+  fs.copyFileSync(srcPath, fallbackPath);
+  console.log("✅ Copied logo to public/logo/mylogo.jpg for fallback!");
+}
+
+// 2. Update BrandLogo component to use /images/logo/mylogo.jpg
+const brandLogoCode = `'use client';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -61,3 +78,7 @@ export default function BrandLogo({
     </Link>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, "components", "ui", "BrandLogo.tsx"), brandLogoCode, "utf8");
+console.log("✅ BrandLogo.tsx path updated to /images/logo/mylogo.jpg!");
