@@ -1,4 +1,15 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+function write(filePath, content) {
+  const full = path.join(__dirname, filePath);
+  fs.mkdirSync(path.dirname(full), { recursive: true });
+  fs.writeFileSync(full, content, "utf8");
+  console.log("✅ Fixed:", filePath);
+}
+
+// 1. SAFE CART CONTEXT (never crashes if context is momentarily missing during SSR)
+write("context/CartContext.tsx", `'use client';
 
 import {
   createContext,
@@ -141,3 +152,82 @@ export function useCart() {
   const ctx = useContext(CartContext);
   return ctx || defaultContext;
 }
+`);
+
+// 2. CLIENT PROVIDERS WRAPPER
+write("components/providers/ClientProviders.tsx", `'use client';
+
+import React from "react";
+import { CartProvider } from "@/context/CartContext";
+import BagDrawer from "@/components/layout/BagDrawer";
+
+export function ClientProviders({ children }: { children: React.ReactNode }) {
+  return (
+    <CartProvider>
+      {children}
+      <BagDrawer />
+    </CartProvider>
+  );
+}
+`);
+
+// 3. CLEAN ROOT LAYOUT
+write("app/layout.tsx", `import type { Metadata } from "next";
+import { Playfair_Display, Montserrat } from "next/font/google";
+import Navbar from "@/components/layout/Navbar";
+import { ClientProviders } from "@/components/providers/ClientProviders";
+import "./globals.css";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"],
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600"],
+});
+
+export const metadata: Metadata = {
+  title: "MAHLET YOSEPH | Fashion House",
+  description:
+    "The Art of Strength. Forgotten silhouettes. Reimagined for movement.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body
+        className={
+          playfair.variable +
+          " " +
+          montserrat.variable +
+          " font-sans bg-[#E7DED5] text-[#4A3D37] antialiased min-h-screen"
+        }
+      >
+        <ClientProviders>
+          <Navbar />
+          {children}
+        </ClientProviders>
+      </body>
+    </html>
+  );
+}
+`);
+
+// Clean build cache if present
+const nextDir = path.join(__dirname, '.next');
+if (fs.existsSync(nextDir)) {
+  try {
+    fs.rmSync(nextDir, { recursive: true, force: true });
+    console.log("✅ Next.js cache cleared.");
+  } catch {}
+}
+
+console.log("\\n🎉 Provider fix deployed cleanly!");

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Montserrat } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
-import BagDrawer from "@/components/layout/BagDrawer";
-import { CartProvider } from "@/context/CartContext";
+import { ClientProviders } from "@/components/providers/ClientProviders";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -38,11 +37,10 @@ export default function RootLayout({
           " font-sans bg-[#E7DED5] text-[#4A3D37] antialiased min-h-screen"
         }
       >
-        <CartProvider>
+        <ClientProviders>
           <Navbar />
           {children}
-          <BagDrawer />
-        </CartProvider>
+        </ClientProviders>
       </body>
     </html>
   );
