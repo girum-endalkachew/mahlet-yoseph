@@ -1,4 +1,80 @@
-'use client';
+﻿const fs = require('fs');
+const path = require('path');
+
+const navbarContent = `'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { Search, ShoppingBag, Menu, X } from 'lucide-react';
+
+export default function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <>
+      <header className="absolute top-0 w-full z-40 py-4 md:py-6 px-4 sm:px-8 md:px-12 flex justify-between items-center text-[#E7DED5] mix-blend-difference">
+        {/* Mobile Left: Menu Toggle */}
+        <button 
+          onClick={() => setMobileMenuOpen(true)}
+          className="lg:hidden text-[#E7DED5] p-1 focus:outline-none"
+          aria-label="Open Menu"
+        >
+          <Menu size={20} />
+        </button>
+
+        {/* Brand Logo */}
+        <Link href="/" className="font-serif text-2xl md:text-3xl tracking-widest text-[#E7DED5] text-center lg:text-left">
+          M<br /><span className="pl-3 md:pl-4 -mt-2 block">Y</span>
+        </Link>
+        
+        {/* Desktop Links */}
+        <nav className="hidden lg:flex space-x-12 text-[10px] tracking-[0.25em] uppercase font-sans">
+          <Link href="/pieces" className="hover:text-[#B89DA4] transition">Shop</Link>
+          <Link href="/collections" className="hover:text-[#B89DA4] transition">Collections</Link>
+          <Link href="/our-story" className="hover:text-[#B89DA4] transition">The Story</Link>
+          <Link href="/journal" className="hover:text-[#B89DA4] transition">Journal</Link>
+        </nav>
+
+        {/* Right Actions */}
+        <div className="flex items-center space-x-4 sm:space-x-8 text-[10px] tracking-[0.25em] uppercase font-sans">
+          <button className="hidden sm:inline-block hover:text-[#B89DA4] transition">Search</button>
+          <button className="flex items-center gap-1 hover:text-[#B89DA4] transition text-[10px] sm:text-xs">
+            BAG (0) <span className="text-base font-light leading-none ml-0.5">+</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 bg-[#362A24] text-[#E7DED5] p-8 flex flex-col justify-between transition-all duration-300">
+          <div className="flex justify-between items-center border-b border-[#8E786F]/30 pb-6">
+            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="font-serif text-2xl tracking-widest">
+              MAHLET YOSEPH
+            </Link>
+            <button onClick={() => setMobileMenuOpen(false)} className="p-2 text-[#E7DED5]">
+              <X size={24} />
+            </button>
+          </div>
+
+          <nav className="flex flex-col space-y-6 my-auto font-serif text-3xl sm:text-4xl tracking-wide">
+            <Link href="/pieces" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#B89DA4] transition">SHOP ALL</Link>
+            <Link href="/collections" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#B89DA4] transition">COLLECTIONS</Link>
+            <Link href="/archive" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#B89DA4] transition">THE ARCHIVE</Link>
+            <Link href="/our-story" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#B89DA4] transition">OUR STORY</Link>
+            <Link href="/journal" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#B89DA4] transition">JOURNAL</Link>
+          </nav>
+
+          <div className="border-t border-[#8E786F]/30 pt-6 flex justify-between items-end text-[10px] tracking-[0.2em] text-[#8E786F]">
+            <span>NOT VINTAGE. FORGOTTEN.</span>
+            <span>ADDIS ABABA</span>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+`;
+
+const pageContent = `'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -248,3 +324,9 @@ export default function HomePage() {
     </main>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, 'components', 'layout', 'Navbar.tsx'), navbarContent, 'utf8');
+fs.writeFileSync(path.join(__dirname, 'app', 'page.tsx'), pageContent, 'utf8');
+
+console.log('✅ Success: Responsive Navbar & Page written cleanly!');
