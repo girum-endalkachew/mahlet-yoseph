@@ -1,8 +1,12 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
 
+const pageContent = `'use client';
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, RotateCw, Pause, Play } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 import BrandLogo from "@/components/ui/BrandLogo";
 
@@ -45,129 +49,187 @@ const processSteps = [
 ];
 
 export default function HomePage() {
+  const [heroSpinPaused, setHeroSpinPaused] = useState(false);
+
   return (
     <main className="w-full bg-[#E7DED5] min-h-screen text-[#4A3D37] overflow-x-hidden">
 
-      {/* HERO — original full-bleed style */}
-      <section className="relative w-full h-[100svh] min-h-[640px] bg-[#5C4D45] overflow-hidden flex flex-col justify-between">
-        <div className="absolute inset-0">
+      {/* ========== HERO SECTION WITH BALLERINA MUSIC-BOX SPIN ========== */}
+      <section className="relative w-full min-h-[100svh] bg-[#362A24] text-[#E7DED5] overflow-hidden flex flex-col justify-between pt-20 pb-8 px-6 sm:px-10 md:px-16">
+        
+        {/* Architectural Studio Stage Backdrop */}
+        <div className="absolute inset-0 z-0">
           <Image
             src="/images/hero/hero-main.jpg"
-            alt="Mahlet Yoseph"
+            alt="Mahlet Yoseph Studio Stage"
             fill
             priority
-            className="object-cover object-[center_30%] scale-105"
+            className="object-cover object-center opacity-40 scale-105"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#362A24]/55 via-[#5C4D45]/25 to-[#362A24]/75" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#362A24]/50 via-transparent to-[#362A24]/45" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#362A24]/80 via-[#362A24]/40 to-[#362A24]/95" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#362A24]/85 via-transparent to-[#362A24]/85" />
           <div className="absolute inset-0 grain" />
         </div>
 
-        <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-10 md:px-16 pt-24 pb-10">
-          <div className="max-w-[1600px] mx-auto w-full grid lg:grid-cols-2 gap-10 items-end">
-            <motion.div initial="hidden" animate="show" className="text-[#E7DED5] text-center lg:text-left">
-              <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center lg:justify-start gap-2 text-[#C8A86A] mb-6">
-                <Sparkles size={12} className="fill-[#C8A86A]" />
-                <span className="text-[10px] tracking-[0.42em] uppercase">MAHLET YOSEPH</span>
-                <Sparkles size={12} className="fill-[#C8A86A]" />
-              </motion.div>
-
-              <motion.h1 custom={1} variants={fadeUp} className="font-serif text-[clamp(2.75rem,8vw,6.5rem)] leading-[0.9] tracking-tight">
-                WEAR YOUR <br />
-                <span className="italic font-light text-[#C8A86A]">STRENGTH.</span>
-              </motion.h1>
-
-              <motion.div custom={2} variants={fadeUp} className="mt-8 space-y-2 text-[#E7DED5]/85 font-serif text-base sm:text-lg md:text-xl italic">
-                <p>the courage to begin</p>
-                <p>the confidence to keep going</p>
-                <p>the beauty of becoming</p>
-                <p>the power to rise again</p>
-              </motion.div>
-
-              <motion.div custom={3} variants={fadeUp} className="mt-10 flex flex-wrap gap-4 justify-center lg:justify-start">
-                <Link href="/archive" className="group inline-flex items-center gap-3 text-[10px] tracking-[0.32em] uppercase border border-[#E7DED5]/35 hover:border-[#C8A86A] hover:bg-[#E7DED5]/10 px-6 py-3.5 transition-all duration-500">
-                  Explore The World <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-500" />
-                </Link>
-                <Link href="/philosophy" className="group inline-flex items-center gap-3 text-[10px] tracking-[0.32em] uppercase text-[#C8A86A] border border-[#C8A86A]/40 hover:bg-[#C8A86A]/10 px-6 py-3.5 transition-all duration-500">
-                  Read Philosophy <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-500" />
-                </Link>
-              </motion.div>
+        {/* Hero Content Spread */}
+        <div className="relative z-10 max-w-[1700px] mx-auto w-full my-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center py-8">
+          
+          {/* Left Text Column */}
+          <motion.div initial="hidden" animate="show" className="lg:col-span-4 text-center lg:text-left space-y-6">
+            <motion.div custom={0} variants={fadeUp} className="flex items-center justify-center lg:justify-start gap-2 text-[#C8A86A]">
+              <Sparkles size={12} className="fill-[#C8A86A]" />
+              <span className="text-[10px] tracking-[0.42em] uppercase font-sans">MAHLET YOSEPH</span>
+              <Sparkles size={12} className="fill-[#C8A86A]" />
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 24 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1, delay: 0.25, ease: "easeOut" }}
-              className="hidden lg:block text-right text-[#E7DED5]"
-            >
-              <h2 className="font-serif text-[clamp(2.5rem,5vw,5.5rem)] leading-[0.95] tracking-tight">
-                FORGOTTEN <br />
-                <span className="italic font-light">PIECES.</span>
-              </h2>
-              <p className="mt-6 text-sm font-light text-[#E7DED5]/75 max-w-sm ml-auto leading-relaxed">
-                Forgotten sportswear silhouettes. Reimagined for modern movement.
-              </p>
+            <motion.h1 custom={1} variants={fadeUp} className="font-serif text-[clamp(2.5rem,6vw,5.5rem)] leading-[0.9] tracking-tight">
+              WEAR YOUR <br />
+              <span className="italic font-light text-[#C8A86A]">STRENGTH.</span>
+            </motion.h1>
+
+            {/* Sequential White Text Beats */}
+            <motion.div custom={2} variants={fadeUp} className="space-y-2 text-[#E7DED5] font-serif text-base sm:text-lg italic opacity-90">
+              <p className="border-l-2 border-[#C8A86A]/60 pl-3">the courage to begin</p>
+              <p className="border-l-2 border-[#C8A86A]/60 pl-3">the confidence to keep going</p>
+              <p className="border-l-2 border-[#C8A86A]/60 pl-3">the beauty of becoming</p>
+              <p className="border-l-2 border-[#C8A86A]/60 pl-3">the power to rise again</p>
             </motion.div>
+
+            <motion.div custom={3} variants={fadeUp} className="pt-4 flex flex-wrap gap-4 justify-center lg:justify-start">
+              <Link href="/archive" className="group inline-flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase border border-[#E7DED5]/40 hover:border-[#C8A86A] hover:bg-[#C8A86A]/10 px-6 py-3.5 transition-all">
+                Explore The World <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link href="/philosophy" className="group inline-flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase text-[#C8A86A] border border-[#C8A86A]/50 hover:bg-[#C8A86A]/15 px-6 py-3.5 transition-all">
+                Read Philosophy <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* Center Column: Music-Box Ballerina Spinning Stage */}
+          <div className="lg:col-span-4 relative flex flex-col items-center justify-center my-4 lg:my-0">
+            {/* Illuminated Arch Portal */}
+            <div className="relative w-64 sm:w-80 h-[380px] sm:h-[460px] flex items-center justify-center">
+              
+              {/* Arch Glow Circle */}
+              <div className="absolute w-[260px] sm:w-[320px] h-[340px] sm:h-[420px] rounded-t-full border border-[#C8A86A]/40 bg-gradient-to-b from-[#E7DED5]/15 via-[#C8A86A]/5 to-transparent backdrop-blur-xs flex items-center justify-center shadow-2xl">
+                <div className="w-[220px] sm:w-[280px] h-[300px] sm:h-[380px] rounded-t-full border border-[#E7DED5]/20" />
+              </div>
+
+              {/* Wooden Turntable Base */}
+              <div className="absolute bottom-2 w-56 sm:w-72 h-12 rounded-full bg-gradient-to-r from-[#C8A86A]/50 via-[#E7DED5]/30 to-[#C8A86A]/50 border border-[#C8A86A] shadow-[0_0_35px_rgba(200,168,106,0.3)] transform rotate-x-60">
+                <div className="absolute inset-1.5 rounded-full border border-[#E7DED5]/40 bg-[#362A24]/70" />
+              </div>
+
+              {/* Continuous Ballerina Rotation */}
+              <motion.div
+                className="relative z-10 w-48 sm:w-56 h-[300px] sm:h-[360px] cursor-pointer"
+                animate={heroSpinPaused ? {} : { rotateY: [0, 360] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 16,
+                  ease: "linear",
+                }}
+                onClick={() => setHeroSpinPaused(!heroSpinPaused)}
+                onMouseEnter={() => setHeroSpinPaused(true)}
+                onMouseLeave={() => setHeroSpinPaused(false)}
+                style={{ transformStyle: "preserve-3d" }}
+                title="Click or hover to pause spin"
+              >
+                <Image
+                  src="/images/products/capri-track-pant.jpg"
+                  alt="Mahlet Yoseph Ballerina Mannequin"
+                  fill
+                  priority
+                  sizes="300px"
+                  className="object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] pointer-events-none"
+                />
+              </motion.div>
+
+              {/* Ballerina Control Badge */}
+              <button
+                onClick={() => setHeroSpinPaused(!heroSpinPaused)}
+                className="absolute bottom-0 z-20 flex items-center gap-2 bg-[#362A24]/90 backdrop-blur-md px-4 py-1.5 rounded-full border border-[#C8A86A]/50 text-[9px] tracking-[0.25em] uppercase text-[#C8A86A] shadow-lg hover:bg-[#C8A86A] hover:text-[#362A24] transition"
+              >
+                {heroSpinPaused ? <Play size={10} /> : <Pause size={10} />}
+                <span>{heroSpinPaused ? "Resume Ballerina Turn" : "360° Ballerina Spin"}</span>
+              </button>
+            </div>
           </div>
+
+          {/* Right Text Column */}
+          <motion.div initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 1, delay: 0.25 }} className="lg:col-span-4 text-center lg:text-right space-y-4">
+            <h2 className="font-serif text-[clamp(2.2rem,4vw,4.5rem)] leading-[0.95] tracking-tight text-[#E7DED5]">
+              FORGOTTEN <br />
+              <span className="italic font-light text-[#B89DA4]">PIECES.</span>
+            </h2>
+            <p className="text-sm font-light text-[#E7DED5]/80 max-w-xs mx-auto lg:ml-auto leading-relaxed">
+              Forgotten sportswear silhouettes. Reimagined for modern movement.
+            </p>
+          </motion.div>
+
         </div>
 
-        <div className="relative z-10 px-6 sm:px-10 md:px-16 pb-8 flex justify-between items-end text-[#E7DED5]/70 text-[10px] tracking-[0.3em] uppercase">
+        {/* Hero Footer Meta */}
+        <div className="relative z-10 flex justify-between items-end text-[#E7DED5]/70 text-[10px] tracking-[0.3em] uppercase pt-4 border-t border-[#E7DED5]/15">
           <span>THE ART OF STRENGTH</span>
           <div className="flex items-center gap-3">
             <span className="text-[#C8A86A]">01</span>
-            <span className="w-10 h-px bg-[#E7DED5]/35" />
+            <span className="w-10 h-px bg-[#E7DED5]/40" />
             <span>07</span>
           </div>
         </div>
       </section>
 
-      {/* PHILOSOPHY TEASER — dark bg so text is always readable */}
-      <section className="relative py-24 md:py-32 px-6 text-center overflow-hidden bg-[#362A24]">
-        <div className="absolute inset-0 -z-10">
-          <Image src="/images/philosophy/bg.jpg" alt="Philosophy" fill className="object-cover opacity-40" sizes="100vw" />
-          <div className="absolute inset-0 bg-[#362A24]/70" />
+      {/* ========== PHILOSOPHY SECTION (FIXED HIGH-CONTRAST DARK BACKGROUND) ========== */}
+      <section className="relative py-24 md:py-32 px-6 text-center bg-[#362A24] text-[#E7DED5] overflow-hidden border-y border-[#C8A86A]/30">
+        
+        {/* Background Image Layer */}
+        <div className="absolute inset-0 z-0">
+          <Image src="/images/philosophy/bg.jpg" alt="Philosophy" fill className="object-cover opacity-35" sizes="100vw" />
+          <div className="absolute inset-0 bg-[#362A24]/75" />
           <div className="absolute inset-0 grain" />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
-          className="max-w-3xl mx-auto text-[#E7DED5] space-y-8"
-        >
+        <div className="gold-line absolute top-0 left-[10%] right-[10%] z-10" />
+
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.3 }} transition={{ duration: 0.9 }} className="relative z-10 max-w-4xl mx-auto space-y-8">
           <div className="flex items-center justify-center gap-2 text-[#C8A86A]">
-            <Sparkles size={11} className="fill-[#C8A86A]" />
-            <span className="text-[10px] tracking-[0.4em] uppercase">Philosophy</span>
-            <Sparkles size={11} className="fill-[#C8A86A]" />
+            <Sparkles size={12} className="fill-[#C8A86A]" />
+            <span className="text-[10px] tracking-[0.4em] uppercase font-sans">PHILOSOPHY</span>
+            <Sparkles size={12} className="fill-[#C8A86A]" />
           </div>
 
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl leading-[0.95]">
+          <h2 className="font-serif text-4xl sm:text-6xl md:text-7xl leading-[0.9] tracking-tight text-[#E7DED5]">
             WEAR YOUR <span className="italic text-[#C8A86A]">STRENGTH.</span>
           </h2>
 
-          <p className="font-serif text-xl sm:text-2xl italic text-[#E7DED5]/85 leading-relaxed">
+          <p className="font-serif text-2xl sm:text-3xl italic text-[#E7DED5] leading-relaxed max-w-2xl mx-auto">
             We believe strength begins beyond ourselves.
           </p>
 
-          <div className="space-y-2 text-base sm:text-lg font-serif text-[#E7DED5]/75 italic">
+          <div className="space-y-3 text-lg sm:text-xl font-serif text-[#E7DED5]/90 italic py-6 border-y border-[#E7DED5]/20 max-w-xl mx-auto">
             <p>the courage to begin</p>
             <p>the confidence to keep going</p>
             <p>the beauty of becoming</p>
             <p>the power to rise again</p>
           </div>
 
-          <Link
-            href="/philosophy"
-            className="inline-flex items-center gap-3 mt-4 text-[10px] tracking-[0.3em] uppercase border border-[#E7DED5]/30 hover:border-[#C8A86A] hover:bg-[#E7DED5]/5 px-6 py-3.5 transition-all duration-500 text-[#E7DED5]"
-          >
-            Read Full Philosophy <ArrowRight size={13} />
-          </Link>
+          <p className="text-sm sm:text-base font-sans font-light text-[#E7DED5]/80 max-w-lg mx-auto leading-relaxed">
+            We create for those who move with purpose, live with confidence, and carry strength wherever they go.
+          </p>
+
+          <div className="pt-4">
+            <Link href="/philosophy" className="inline-flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase bg-[#C8A86A] text-[#362A24] font-semibold hover:bg-[#E7DED5] px-8 py-4 transition-all shadow-lg">
+              Read Full Philosophy <ArrowRight size={13} />
+            </Link>
+          </div>
         </motion.div>
+
+        <div className="gold-line absolute bottom-0 left-[10%] right-[10%] z-10" />
       </section>
 
-      {/* WORLDS */}
+      {/* ========== WORLDS ========== */}
       <section className="border-b border-[#8E786F]/20 flex flex-col lg:flex-row bg-[#DED5CD]">
         <div className="lg:w-[28%] p-7 sm:p-10 md:p-12 border-b lg:border-b-0 lg:border-r border-[#8E786F]/20 flex flex-row lg:flex-col justify-between gap-6 shrink-0">
           <div>
@@ -195,7 +257,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PIECES */}
+      {/* ========== PIECES ========== */}
       <section className="border-b border-[#8E786F]/20 flex flex-col lg:flex-row bg-[#E7DED5]">
         <div className="lg:w-[28%] p-7 sm:p-10 md:p-12 border-b lg:border-b-0 lg:border-r border-[#8E786F]/20 flex flex-row lg:flex-col justify-between gap-6 shrink-0">
           <div>
@@ -217,7 +279,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* SIGNATURE + PROCESS */}
+      {/* ========== SIGNATURE + PROCESS ========== */}
       <section className="border-b border-[#8E786F]/20 grid grid-cols-1 lg:grid-cols-2">
         <div className="relative min-h-[480px] md:min-h-[560px] bg-[#66554D] text-[#E7DED5] overflow-hidden group">
           <Image src="/images/products/3d-product-story.jpg" alt="Capri Track Pant" fill className="object-cover opacity-55 group-hover:opacity-65 group-hover:scale-105 transition-all duration-[1.4s] ease-out" />
@@ -241,9 +303,7 @@ export default function HomePage() {
             {processSteps.map((p, i) => (
               <div key={p.step} className="flex items-start gap-2 shrink-0">
                 <div className="w-[5.5rem] sm:w-24">
-                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-[#8E786F]/25 mb-3 shadow-sm">
-                    <Image src={p.img} alt={p.step} fill className="object-cover" />
-                  </div>
+                  <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-[#8E786F]/25 mb-3 shadow-sm"><Image src={p.img} alt={p.step} fill className="object-cover" /></div>
                   <h4 className="text-[8px] sm:text-[9px] tracking-[0.2em] uppercase font-semibold">{p.step}</h4>
                   <p className="text-[7px] sm:text-[8px] text-[#8E786F] mt-1 leading-snug">{p.desc}</p>
                 </div>
@@ -254,7 +314,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA + FOOTER */}
+      {/* ========== FINAL CTA + FOOTER ========== */}
       <section className="grid grid-cols-1 lg:grid-cols-2 bg-[#362A24] text-[#E7DED5]">
         <div className="relative min-h-[480px] md:min-h-[560px] overflow-hidden group">
           <Image src="/images/cta/move-differently.jpg" alt="Move Differently" fill className="object-cover opacity-45 group-hover:opacity-55 group-hover:scale-105 transition-all duration-[1.4s] ease-out" />
@@ -301,3 +361,7 @@ export default function HomePage() {
     </main>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, "app", "page.tsx"), pageContent, "utf8");
+console.log("\\n🎉 Both issues resolved! Hero Ballerina Mannequin is now continuously spinning 360°, and Philosophy text has high-contrast dark background!");

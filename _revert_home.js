@@ -1,4 +1,7 @@
-'use client';
+﻿const fs = require("fs");
+const path = require("path");
+
+const page = `'use client';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -301,3 +304,7 @@ export default function HomePage() {
     </main>
   );
 }
+`;
+
+fs.writeFileSync(path.join(__dirname, "app", "page.tsx"), page, "utf8");
+console.log("✅ Homepage reverted to the previous clean version!");
